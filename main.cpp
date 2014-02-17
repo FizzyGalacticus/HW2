@@ -12,6 +12,21 @@ using std::endl;
 #include <vector>
 using std::vector;
 
+#include <future>
+using std::async;
+using std::future;
+
+#include <mutex>
+using std::mutex;
+
+//template <typename T>
+void myPrint(const int &thing)
+{
+	mutex coutLock;
+	std::unique_lock<mutex> m(coutLock);
+	cout << thing << endl;
+}
+
 int main(int argc, const char * argv[])
 {
 	auto myInt = 21;
@@ -27,7 +42,7 @@ int main(int argc, const char * argv[])
 	
 	for(int i = 1; i < 101; i++) myNums.push_back(i);
 	
-	for(auto num : myNums) cout << num << endl;
+	for(auto num : myNums) async(std::launch::async,myPrint,num);
 	
 	return 0;
 }
